@@ -12,13 +12,6 @@ export class LoginController {
     private service: LoginService
     ) {}
   
-  @Post()
-  async postLogin(@Req() req: Request, @Res() res: Response) {    
-    const serviceResponse = await this.service.consultarUsuario(req.body);
-    console.log(serviceResponse);
-    res.send(serviceResponse);
-  }
-  
   contieneSQL(input: string): boolean {
     let sqlRegex = /(select|insert|update|delete|alter|create|drop|truncate|grant|revoke|commit|rollback|savepoint)/i;
     return sqlRegex.test(input);
@@ -73,35 +66,9 @@ export class LoginController {
         mensaje: "El nombre y la contraseña no pueden contener caracterespesciales"
       });
     }
-    console.log(req.body);
-    res.send("12345")
-    // serviceResponse = await this.service.iniciarSesion(req.body);
-    // res.send(serviceResponse);
+  
+    serviceResponse = await this.service.iniciarSesion(req.body);
+    res.send(serviceResponse);
   }
-  
-  // @Post('verificar')
-  // async postCaptcha(@Req() req: Request, @Res() res: Response) {
-  //   console.log(req.body);
-  //   const recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
-  //   const recaptchaSecretKey = '6Lddj18pAAAAAB6RKwRS7GpJpGBCzXgE3DT0UDQU';
-  //   const token = req.params.token;
-
-  //   const payload = {
-  //     secret: recaptchaSecretKey,
-  //     response: token,
-  //     remoteip: req.ip,
-  //   };
-  //   try {
-  //     const response = await axios.post(recaptchaUrl, payload);
-  //     const result = response.data;
-  //     console.log(result);
-      
-  //     res.json({ success: result.success || false });
-  //   } catch (error) {
-  //     console.error('Error al verificar el CAPTCHA', error);
-  //     res.status(500).json({ success: false, error: 'Error interno del servidor' });
-  //   }
-  // }
-
-  
+    
 }

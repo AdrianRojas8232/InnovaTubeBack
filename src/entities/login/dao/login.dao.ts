@@ -52,17 +52,16 @@ export class LoginDao {
     }
   }
 
-  static async ValidarUsuario(usuario: any): Promise<any> {
+  static async ValidarUsuario(usuario: LoginModel): Promise<any> {
     
     let sql;
     
     try {
 
-        sql = 'select * from seguridad.users where nombre = ? and contrasenia = ?;';
+        sql = 'select contrasenia from innovatube.usuarios where correo_electronico = ?;';
 
         const values = [
-            usuario.nombre,
-            usuario.contra
+            usuario.correo
           ];
         
         const result: any = await DatabaseService.executeQuery(sql, values);

@@ -11,43 +11,6 @@ export class LoginService {
   constructor(
     ) {}
 
-  async consultarUsuario(credenciales: LoginModel): Promise<object | string | any> {
-
-    try {
-                
-        let consulta: UserModel= await LoginDao.consultarUsuario(credenciales);
-        
-        if (!consulta){
-            return{
-                status: 0,
-                mensaje: "Credenciales incorrectas",
-            };
-        }
-
-        const contraseniaCorrecta = await bcrypt.compare(credenciales.contrasenia, consulta.contrasenia);
-
-        if(!contraseniaCorrecta){
-            return{
-                status: -1,
-                mensaje: "Contraseña incorrecta"
-            };
-        }
-        
-        return{
-            status: 1,
-            mensaje: "Inisio de sesion exitoso",
-            data:{
-                usuario: consulta.nombre,
-                correo: consulta.correo
-            }
-        };
-        
-    } catch (error: any) {
-      console.error('Error en LoginService:', error);
-      return `Error en LoginService- Función: consultarUsuario - ${error.message}`;
-    }
-  }
-
   async registrarUsuario(usuario: RegistroModel): Promise<object | string | any> {
 
     try {
@@ -81,21 +44,31 @@ export class LoginService {
     }
   }
 
-  async iniciarSesion(usuario: any): Promise<object | string | any> {
+  async iniciarSesion(usuario: LoginModel): Promise<object | string | any> {
 
     try {
-
+      console.log(usuario);
+      
       let registro = await LoginDao.ValidarUsuario(usuario);
       
-      if(registro){
+      if (!registro) {
+        return {
+          status: -1,
+          mensaje: "Usuario incorrecto"
+        }
+      }
+      const contraseniaCorrecta = await bcrypt.compare(usuario.contrasenia, registro.contrasenia);
+      console.log();
+      
+      if(contraseniaCorrecta){
         return {
           status: 1,
           mensaje: "Inicio Exitoso"
-        }
+      }
       }else{
         return {
-          status: 0,
-          mensaje: "Usuario Incorrecto"
+          status: -1,
+          mensaje: "Contraseña incorrecta"
         }
       }
         
