@@ -19,25 +19,9 @@ export class LoginController {
     res.send(serviceResponse);
   }
   
-  // contieneSQL(input: string): boolean {
-  //   let sqlRegex = /(select|insert|update|delete|alter|create|drop|truncate|grant|revoke|commit|rollback|savepoint)\b/i;
-  //   console.log(input);
-    
-  //   return sqlRegex.test(input);
-  // }
   contieneSQL(input: string): boolean {
-    console.log(input);
-      const sqlKeywords = ["select", "insert", "update", "delete", "alter", "create", "drop", "truncate", "grant", "revoke", "commit", "rollback", "savepoint"];
-      
-      const words = input.split(/\W+/);
-      console.log(words);
-      for (let word of words) {
-          if (sqlKeywords.includes(word.toLowerCase())) {
-              return true;
-          }
-      }
-      
-      return false;
+    let sqlRegex = /(select|insert|update|delete|alter|create|drop|truncate|grant|revoke|commit|rollback|savepoint)/i;
+    return sqlRegex.test(input);
   }
 
   contieneCaracteresEspeciales(input: string): boolean {
