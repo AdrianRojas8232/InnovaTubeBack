@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ErrorMessage, SuccessfulMessage } from '../../../common/utils/movimientos.utils';
-import { LoginModel, UserModel, RegistroModel } from '../models/login.model';
+import { LoginModel, UserModel, RegistroModel, IdUsuarioModel } from '../models/login.model';
 import { LoginDao } from '../dao/login.dao';
 import axios from 'axios';
 import bcrypt from 'bcrypt';
@@ -82,6 +82,15 @@ export class LoginService {
       console.error('Error en LoginService:', error);
       return `Error en LoginService- Función: iniciarSesion - ${error.message}`;
     }
+  }
+
+  async cambiarEstatusUsuario(idUsuario: IdUsuarioModel): Promise<object | string | any> {
+    
+    let respuesta = await LoginDao.cambiarEstatus(idUsuario.idUsuario);
+    return {
+      estatus: 1,
+      mensaje: "Sesion cerrada."
+    };
   }
 
 }

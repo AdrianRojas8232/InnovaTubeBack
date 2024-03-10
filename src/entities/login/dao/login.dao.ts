@@ -33,7 +33,7 @@ export class LoginDao {
     
     try {
 
-      sql = `INSERT INTO innovatube.usuarios (nombre_completo, contrasenia, correo_electronico, fecha_nacimiento, fecha_mod, estatus) VALUES (?, ?, ?, ?, now(), 1);`;
+      sql = `INSERT INTO innovatube.usuarios (nombre_completo, contrasenia, correo_electronico, fecha_nacimiento, fecha_mod, estatus) VALUES (?, ?, ?, ?, now(), 0);`;
 
       const values = [
         usuario.nombre_completo,
@@ -72,6 +72,28 @@ export class LoginDao {
           idUsuario: result[0].id_usaurio,
           estatus: result[0].estatus
         };
+        
+    } catch (error) {
+        console.error('Error en LoginDao:', error);
+        throw error;
+    }
+  }
+
+  static async cambiarEstatus(idUsuario: String): Promise<any> {
+    
+    let sql;
+    
+    try {
+
+        sql = 'update innovatube.usuarios set estatus = 0 where id_usaurio = ?;';
+
+        const values = [
+            idUsuario
+          ];
+        
+        const result: any = await DatabaseService.executeQuery(sql, values);
+      
+        return result;
         
     } catch (error) {
         console.error('Error en LoginDao:', error);

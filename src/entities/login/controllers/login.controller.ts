@@ -71,4 +71,12 @@ export class LoginController {
     res.send(serviceResponse);
   }
     
+  @Post('cerrarSesion')
+  async postCerrar(@Req() req: Request, @Res() res: Response) {    
+    let serviceResponse;
+
+    serviceResponse = await this.service.cambiarEstatusUsuario(req.body);
+
+    res.send(serviceResponse);
+  }
 }

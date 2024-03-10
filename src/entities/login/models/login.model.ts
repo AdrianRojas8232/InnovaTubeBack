@@ -23,6 +23,15 @@ export class LoginModel {
     }
 }
 
+export class IdUsuarioModel {
+  idUsuario!: string;
+  
+  constructor(idUsuario: string) {
+    this.idUsuario = idUsuario;    
+
+  }
+}
+
 export class UserModel {
     id_usuario!: number;
     ap_paterno!: String;
