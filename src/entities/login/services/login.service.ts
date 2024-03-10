@@ -63,7 +63,9 @@ export class LoginService {
       if(contraseniaCorrecta){
         return {
           status: 1,
-          mensaje: "Inicio Exitoso"
+          mensaje: "Inicio Exitoso",
+          correo: registro.correo,
+          idUsuario: registro.idUsuario
       }
       }else{
         return {

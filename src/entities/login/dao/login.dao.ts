@@ -58,7 +58,7 @@ export class LoginDao {
     
     try {
 
-        sql = 'select contrasenia from innovatube.usuarios where correo_electronico = ?;';
+        sql = 'select correo_electronico,contrasenia,id_usaurio from innovatube.usuarios where correo_electronico = ?;';
 
         const values = [
             usuario.correo
@@ -66,7 +66,11 @@ export class LoginDao {
         
         const result: any = await DatabaseService.executeQuery(sql, values);
       
-        return result[0];
+        return {
+          correo: result[0].correo_electronico,
+          contrasenia: result[0].contrasenia,
+          idUsuario: result[0].id_usaurio
+        };
         
     } catch (error) {
         console.error('Error en LoginDao:', error);
