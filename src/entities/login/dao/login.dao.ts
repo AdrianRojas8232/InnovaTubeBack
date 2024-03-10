@@ -58,7 +58,7 @@ export class LoginDao {
     
     try {
 
-        sql = 'select correo_electronico,contrasenia,id_usaurio from innovatube.usuarios where correo_electronico = ?;';
+        sql = 'select correo_electronico,contrasenia,id_usaurio,estatus from innovatube.usuarios where correo_electronico = ?;';
 
         const values = [
             usuario.correo
@@ -69,7 +69,8 @@ export class LoginDao {
         return {
           correo: result[0].correo_electronico,
           contrasenia: result[0].contrasenia,
-          idUsuario: result[0].id_usaurio
+          idUsuario: result[0].id_usaurio,
+          estatus: result[0].estatus
         };
         
     } catch (error) {

@@ -59,8 +59,12 @@ export class LoginService {
       }
       const contraseniaCorrecta = await bcrypt.compare(usuario.contrasenia, registro.contrasenia);
       console.log();
-      
-      if(contraseniaCorrecta){
+      if(contraseniaCorrecta && registro.estatus === 1){
+        return {
+          status: -1,
+          mensaje: "El usuario ya cuenta con una sesión activa"
+        }
+      }else if(contraseniaCorrecta){
         return {
           status: 1,
           mensaje: "Inicio Exitoso",
