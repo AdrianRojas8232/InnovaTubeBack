@@ -4,6 +4,7 @@ import { LoginModel, UserModel, RegistroModel, IdUsuarioModel } from '../models/
 import { LoginDao } from '../dao/login.dao';
 import axios from 'axios';
 import bcrypt from 'bcrypt';
+import { log } from 'console';
 
 @Injectable()
 export class LoginService {
@@ -47,7 +48,6 @@ export class LoginService {
   async iniciarSesion(usuario: LoginModel): Promise<object | string | any> {
 
     try {
-      console.log(usuario);
       
       let registro = await LoginDao.ValidarUsuario(usuario);
       
@@ -58,13 +58,14 @@ export class LoginService {
         }
       }
       const contraseniaCorrecta = await bcrypt.compare(usuario.contrasenia, registro.contrasenia);
-      console.log();
+      
       if(contraseniaCorrecta && registro.estatus === 1){
         return {
           status: -1,
           mensaje: "El usuario ya cuenta con una sesión activa"
         }
       }else if(contraseniaCorrecta){
+        let respuesta = await LoginDao.cambiarEstatus(1,registro.idUsuario);
         return {
           status: 1,
           mensaje: "Inicio Exitoso",
@@ -86,7 +87,7 @@ export class LoginService {
 
   async cambiarEstatusUsuario(idUsuario: IdUsuarioModel): Promise<object | string | any> {
     
-    let respuesta = await LoginDao.cambiarEstatus(idUsuario.idUsuario);
+    let respuesta = await LoginDao.cambiarEstatus(0,idUsuario.idUsuario);
     return {
       estatus: 1,
       mensaje: "Sesion cerrada."

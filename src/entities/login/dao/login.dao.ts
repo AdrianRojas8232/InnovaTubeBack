@@ -79,13 +79,13 @@ export class LoginDao {
     }
   }
 
-  static async cambiarEstatus(idUsuario: String): Promise<any> {
+  static async cambiarEstatus(estatus: number,idUsuario: String): Promise<any> {
     
     let sql;
     
     try {
 
-        sql = 'update innovatube.usuarios set estatus = 0 where id_usaurio = ?;';
+        sql = `update innovatube.usuarios set estatus = ${estatus} where id_usaurio = ?;`;
 
         const values = [
             idUsuario
