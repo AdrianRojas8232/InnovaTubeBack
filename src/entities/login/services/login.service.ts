@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ErrorMessage, SuccessfulMessage } from '../../../common/utils/movimientos.utils';
-import { LoginModel, UserModel } from '../models/login.model';
+import { LoginModel, UserModel, RegistroModel } from '../models/login.model';
 import { LoginDao } from '../dao/login.dao';
 import axios from 'axios';
 import bcrypt from 'bcrypt';
@@ -48,28 +48,32 @@ export class LoginService {
     }
   }
 
-  async registrarUsuario(usuario: UserModel): Promise<object | string | any> {
+  async registrarUsuario(usuario: RegistroModel): Promise<object | string | any> {
 
     try {
-            
-        
-        const hashedPassword = await bcrypt.hash(usuario.contrasenia, 10);
-        usuario.contrasenia = hashedPassword;
-        let registro = await LoginDao.registrarUsuario(usuario);
-        
-        if(!registro){
-          return{
-            status: 0,
-            mensaje: "Error al insertar regisxtro",
-          };
+      let mensaje;
 
+      const hashedPassword = await bcrypt.hash(usuario.contrasenia, 10);
+      usuario.contrasenia = hashedPassword;
+      let registro = await LoginDao.registrarUsuario(usuario);
+      
+      if(registro.errno){
+        if(registro.errno === 1062){
+          mensaje = "CORREO EXISTENTE.";
+        }else{
+          mensaje = "ERROR AL registrar.";
         }
-        if(registro.insertId){
-          return{
-            status: 1,
-            mensaje: "Registro exitoso",
-          };
+        return{
+          estatus: -1,
+          mensaje: mensaje
         }
+      }else{
+        mensaje="REGISTRO EXITOSO."
+      }
+      return{
+        estatus: 1,
+        mensaje: mensaje
+      }
         
     } catch (error: any) {
       console.error('Error en LoginService:', error);

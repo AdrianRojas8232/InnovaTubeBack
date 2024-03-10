@@ -7,13 +7,10 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
 
   app.enableCors({
-    origin: [
-      'http://192.168.137.158:5000',
-      // 'http://192.168.247.158:8001',
-      // 'http://192.168.247.162:8080',
-      // 'http://192.168.247.62',
-      // 'http://192.168.247.62:80',
-    ],
+    // origin: [
+    //   'http://192.168.137.158:5000',
+    // ],
+    origin:'*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });

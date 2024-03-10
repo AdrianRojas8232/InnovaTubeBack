@@ -1,9 +1,9 @@
 import { DatabaseService } from '../../../database/services/database.service';
-import { LoginModel, UserModel } from '../models/login.model';
+import { LoginModel, UserModel, RegistroModel } from '../models/login.model';
 import { RowDataPacket  } from 'mysql2';
 
 export class LoginDao {
-    constructor() {}
+  constructor() {}
 
   static async consultarUsuario(credenciales: any): Promise<any> {
     
@@ -27,30 +27,28 @@ export class LoginDao {
     }
   }
 
-  static async registrarUsuario(usuario: UserModel): Promise<any> {
+  static async registrarUsuario(usuario: RegistroModel): Promise<any> {
     
-    console.log(usuario);
     let sql;
     
     try {
 
-        sql = ' INSERT INTO innova_tube.usuario (nombre, ap_paterno, ap_materno, correo, contrasenia) VALUES (?, ?, ?, ?, ?);';
+      sql = `INSERT INTO innovatube.usuarios (nombre_completo, contrasenia, correo_electronico, fecha_nacimiento, fecha_mod, estatus) VALUES (?, ?, ?, ?, now(), 1);`;
 
-        const values = [
-            usuario.nombre,
-            usuario.ap_paterno,
-            usuario.ap_materno,
-            usuario.correo,
-            usuario.contrasenia
-          ];
-        
-        const result: any = await DatabaseService.executeQuery(sql, values);
-               
-        return result;
+      const values = [
+        usuario.nombre_completo,
+        usuario.contrasenia,
+        usuario.correo_electronico,
+        usuario.fecha_nacimiento
+      ];
+      
+      const consulta: any = await DatabaseService.executeQuery(sql, values);
+      
+      return consulta;
         
     } catch (error) {
         console.error('Error en LoginDao:', error);
-        // throw error;
+        return error;
     }
   }
 

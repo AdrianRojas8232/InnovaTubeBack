@@ -1,3 +1,16 @@
+export class RegistroModel{
+  nombre_completo!: string;
+  contrasenia!: string;
+  correo_electronico!: string;
+  fecha_nacimiento!: string;
+  constructor(nombre_completo: string, contrasenia: string, correo_electronico: string, fecha_nacimiento: string) {
+    this.nombre_completo = nombre_completo;
+    this.contrasenia = contrasenia;
+    this.correo_electronico = correo_electronico;
+    this.fecha_nacimiento = fecha_nacimiento;
+    }
+}
+
 export class LoginModel {
     correo!: string;
     contrasenia!: string;
@@ -25,6 +38,5 @@ export class UserModel {
     this.nombre = nombre;
     this.correo = correo;
     this.contrasenia = contrasenia;
-
     }
 }
