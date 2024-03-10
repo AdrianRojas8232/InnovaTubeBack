@@ -58,7 +58,7 @@ export class LoginDao {
     
     try {
 
-        sql = 'select correo_electronico,contrasenia,id_usaurio,estatus from innovatube.usuarios where correo_electronico = ?;';
+        sql = 'select correo_electronico,contrasenia,id_usaurio,estatus, fecha_mod from innovatube.usuarios where correo_electronico = ?;';
 
         const values = [
             usuario.correo
@@ -70,7 +70,8 @@ export class LoginDao {
           correo: result[0].correo_electronico,
           contrasenia: result[0].contrasenia,
           idUsuario: result[0].id_usaurio,
-          estatus: result[0].estatus
+          estatus: result[0].estatus,
+          fecha_mod: result[0].fecha_mod,
         };
         
     } catch (error) {
@@ -89,6 +90,29 @@ export class LoginDao {
 
         const values = [
             idUsuario
+          ];
+        
+        const result: any = await DatabaseService.executeQuery(sql, values);
+      
+        return result;
+        
+    } catch (error) {
+        console.error('Error en LoginDao:', error);
+        throw error;
+    }
+  }
+
+  static async cambiarContrasenia(correo: String,contrasenia: String): Promise<any> {
+    
+    let sql;
+    
+    try {
+
+        sql = `update innovatube.usuarios set contrasenia = ?, fecha_mod = now() where correo_electronico = ?;`;
+
+        const values = [
+            contrasenia,
+            correo
           ];
         
         const result: any = await DatabaseService.executeQuery(sql, values);

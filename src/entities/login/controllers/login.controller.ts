@@ -66,7 +66,7 @@ export class LoginController {
         mensaje: "El nombre y la contraseña no pueden contener caracterespesciales"
       });
     }
-  
+    
     serviceResponse = await this.service.iniciarSesion(req.body);
     res.send(serviceResponse);
   }
@@ -76,6 +76,15 @@ export class LoginController {
     let serviceResponse;
 
     serviceResponse = await this.service.cambiarEstatusUsuario(req.body);
+
+    res.send(serviceResponse);
+  
+  }
+  @Post('cambiarContrasenia')
+  async postCambiarContrasenia(@Req() req: Request, @Res() res: Response) {    
+    let serviceResponse;
+
+    serviceResponse = await this.service.cambiarContrasenia(req.body);
 
     res.send(serviceResponse);
   }

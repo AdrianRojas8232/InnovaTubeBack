@@ -32,6 +32,17 @@ export class IdUsuarioModel {
   }
 }
 
+export class ContraseniaModel {
+  contrasenia!: string;
+  correo!: string;
+  
+  constructor(contrasenia: string, correo: string) {
+    this.contrasenia = contrasenia;    
+    this.correo = correo;    
+
+  }
+}
+
 export class UserModel {
     id_usuario!: number;
     ap_paterno!: String;
