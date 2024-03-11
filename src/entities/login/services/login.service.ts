@@ -50,14 +50,16 @@ export class LoginService {
     try {
       
       let registro = await LoginDao.ValidarUsuario(usuario);
-      let roles = await LoginDao.consultarRol(registro.idUsuario);
-
+      
       if (!registro) {
         return {
           status: -1,
           mensaje: "Usuario incorrecto"
         }
       }
+
+      let roles = await LoginDao.consultarRol(registro.idUsuario);      
+      
       const contraseniaCorrecta = await bcrypt.compare(usuario.contrasenia, registro.contrasenia);
       
       if(contraseniaCorrecta && registro.estatus === 1){
@@ -132,7 +134,6 @@ export class LoginService {
   async obtenerUsuarios(): Promise<any[]> {
     try {
       const listaUsuarios = await LoginDao.obtenerListaUsuarios();
-      console.log('Lista de usuarios:', listaUsuarios);
       return listaUsuarios;
     } catch (error) {
       console.error('Error al obtener la lista de usuarios:', error);

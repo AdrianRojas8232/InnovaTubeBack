@@ -60,7 +60,11 @@ export class LoginDao {
           ];
         
         const result: any = await DatabaseService.executeQuery(sql, values);
-      
+
+        if (!result[0]){
+          return result[0];
+        }
+
         return {
           correo: result[0].correo_electronico,
           contrasenia: result[0].contrasenia,

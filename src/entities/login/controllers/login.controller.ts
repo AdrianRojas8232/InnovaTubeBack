@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { LoginService } from '../services/login.service';
 import { LoginModel, UserModel } from '../models/login.model';
 import axios from 'axios';
+import { errorLogger, logger } from '../../../utils/loggerLogin';
 
 @Controller('login')
 export class LoginController {
@@ -42,7 +43,7 @@ export class LoginController {
       });
     }
     
-    this.serviceResponse = await this.service.registrarUsuario(req.body);    
+    this.serviceResponse = await this.service.registrarUsuario(req.body);
     res.send(this.serviceResponse);
 
   }
@@ -66,6 +67,12 @@ export class LoginController {
       });
     }    
     serviceResponse = await this.service.iniciarSesion(req.body);
+
+    if (serviceResponse.status === -1) {
+      errorLogger.error(`usuario: ${req.body.correo}, error: ${serviceResponse.mensaje}`); 
+    } else{
+      logger.info(`usuario: ${req.body.correo}, mensaje: ${serviceResponse.mensaje}`); 
+    }
     res.send(serviceResponse);
   }
     

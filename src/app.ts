@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Request, Response, NextFunction } from 'express';
+import logger from './utils/loggerApp';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,7 +17,7 @@ async function bootstrap() {
   });
 
   app.use((req: Request, res: Response, next: NextFunction) => {
-    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url} -npm IP: ${req.ip}`);
+    logger.info(`[${new Date().toLocaleString()}] ${req.method} ${req.url} -npm IP: ${req.ip}`);
     next();
   });
   
@@ -24,7 +25,7 @@ async function bootstrap() {
   
   await app.listen(port);
 
-  console.log(`Servidor escuchando en el puerto ${port}`);
+  logger.info(`Servidor escuchando en el puerto ${port}`);
 }
 
 bootstrap();
