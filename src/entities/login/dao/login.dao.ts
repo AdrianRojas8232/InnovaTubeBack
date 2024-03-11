@@ -181,6 +181,58 @@ export class LoginDao {
       throw error;
     }
   }
+
+  static async bloquearUsuario(idUsuario: String): Promise<any> {
+    
+    
+    let sql;
+    let intentos = 0;
+    
+    try {
+
+        sql = `select * from innovatube.usuariosbloqueados where id_usuario = ?;`;
+
+        const values = [
+            idUsuario
+          ];
+        
+        const result: any = await DatabaseService.executeQuery(sql, values);
+
+        if(result[0]) intentos = result[0].intentos + 1;
+        
+        let values2;
+        if(!intentos) {
+          intentos = 1;
+          sql = `INSERT INTO innovatube.usuariosbloqueados (id_usuario, intentos) VALUES (?, ?);`;
+          values2 = [
+            idUsuario,
+            intentos
+          ];
+        }else{
+          sql = `UPDATE innovatube.usuariosbloqueados SET intentos = ? WHERE id_usuario = ?`;
+          values2 = [
+            intentos,
+            idUsuario
+          ];
+        }
+
+        const result2: any = await DatabaseService.executeQuery(sql, values2);
+
+        if (intentos >= 3){
+          sql = `update innovatube.usuarios set estatus = 2 where id_usaurio = ?;`;
+          const values3 = [
+            idUsuario
+          ];
+          const result3: any = await DatabaseService.executeQuery(sql, values3);
+        }
+
+        return result2;
+        
+    } catch (error) {
+        console.error('Error en LoginDao:', error);
+        throw error;
+    }
+  }
   
   
 }

@@ -56,6 +56,11 @@ export class LoginService {
           status: -1,
           mensaje: "Usuario incorrecto"
         }
+      }else if (registro.estatus === 2){
+        return {
+          status: -1,
+          mensaje: "Usuario bloqueado comunicate con soporte para validar el estatus de tu cuenta."
+        }
       }
 
       let roles = await LoginDao.consultarRol(registro.idUsuario);      
@@ -87,8 +92,9 @@ export class LoginService {
           rolUsuario: roles.rolUsuario,
           nombreRol: roles.nombreRol,
           nombreUsuario: registro.nombreUsuario
-      }
+        }
       }else{
+        let bolquear = await LoginDao.bloquearUsuario(registro.idUsuario);
         return {
           status: -1,
           mensaje: "Contraseña incorrecta"

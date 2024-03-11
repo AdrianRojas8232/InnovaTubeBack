@@ -52,14 +52,12 @@ export class LoginController {
   async postIniciar(@Req() req: Request, @Res() res: Response) {    
     let serviceResponse;
     
-    // Validar si el formulario contienen SQL
     if (this.contieneSQL(req.body.contrasenia) || this.contieneSQL(req.body.correo) ) {
       return res.send({
         status: -1,
         mensaje: "El nombre, la contraseña y el correo no pueden contener consultas SQL"
       });
     }
-    // Validar si el formulario contienen caracteres especiales
     if (this.contieneCaracteresEspeciales(req.body.contrasenia)) {
       return res.send({
         status: -1,
