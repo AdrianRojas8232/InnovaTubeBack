@@ -50,6 +50,7 @@ export class LoginService {
     try {
       
       let registro = await LoginDao.ValidarUsuario(usuario);
+      let roles = await LoginDao.consultarRol(registro.idUsuario);
 
       if (!registro) {
         return {
@@ -80,7 +81,10 @@ export class LoginService {
           status: 1,
           mensaje: "Inicio Exitoso",
           correo: registro.correo,
-          idUsuario: registro.idUsuario
+          idUsuario: registro.idUsuario,
+          rolUsuario: roles.rolUsuario,
+          nombreRol: roles.nombreRol,
+          nombreUsuario: registro.nombreUsuario
       }
       }else{
         return {
@@ -123,6 +127,17 @@ export class LoginService {
       status: 1,
       mensaje: "Contraseña actualizada correctamente."
     };
+  }
+
+  async obtenerUsuarios(): Promise<any[]> {
+    try {
+      const listaUsuarios = await LoginDao.obtenerListaUsuarios();
+      console.log('Lista de usuarios:', listaUsuarios);
+      return listaUsuarios;
+    } catch (error) {
+      console.error('Error al obtener la lista de usuarios:', error);
+      throw error; 
+    }
   }
 
 }

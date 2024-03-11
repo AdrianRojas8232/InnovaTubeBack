@@ -58,15 +58,13 @@ export class LoginController {
         mensaje: "El nombre, la contraseña y el correo no pueden contener consultas SQL"
       });
     }
-
     // Validar si el formulario contienen caracteres especiales
     if (this.contieneCaracteresEspeciales(req.body.contrasenia)) {
       return res.send({
         status: -1,
         mensaje: "El nombre y la contraseña no pueden contener caracterespesciales"
       });
-    }
-    
+    }    
     serviceResponse = await this.service.iniciarSesion(req.body);
     res.send(serviceResponse);
   }
@@ -74,9 +72,7 @@ export class LoginController {
   @Post('cerrarSesion')
   async postCerrar(@Req() req: Request, @Res() res: Response) {    
     let serviceResponse;
-
     serviceResponse = await this.service.cambiarEstatusUsuario(req.body);
-
     res.send(serviceResponse);
   
   }
@@ -88,4 +84,21 @@ export class LoginController {
 
     res.send(serviceResponse);
   }
+
+  @Get('listaUsuarios')
+  async obtenerListaUsuarios(@Req() req: Request, @Res() res: Response) {
+    try {
+      const listaUsuarios = await this.service.obtenerUsuarios();
+      res.send({ usuarios: listaUsuarios });
+    } catch (error) {
+      console.error('Error al obtener la lista de usuarios:', error);
+      res.status(500).send({
+        status: -1,
+        mensaje: 'Error interno del servidor al obtener la lista de usuarios'
+      });
+    }
+  }
+
+
+
 }
